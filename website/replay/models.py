@@ -1,17 +1,24 @@
 from django.db import models
+from django.views.decorators.csrf import csrf_exempt
 
 
 class Cycle(models.Model):
-    title = models.CharField(max_length=200)
+    goal = models.CharField(max_length=200)
+    blocks = models.TextField(blank=True)
+    root_case = models.TextField(blank=True)
+    solution = models.TextField(blank=True)
+    execute = models.TextField(blank=True)
 
     def __str__(self):
-        return self.title
+        return self.goal
 
 
 class Goal(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField(blank=True)
-    cycle = models.ForeignKey(Cycle, on_delete=models.SET_NULL, null=True)
+    # cycle = models.ForeignKey(Cycle,
+    #                           on_delete=models.SET_NULL,
+    #                           null=True)
 
     def __str__(self):
         return self.title
@@ -23,7 +30,10 @@ class RoadBlock(models.Model):
     """
     title = models.CharField(max_length=200)
     content = models.TextField(blank=True)
-    goal = models.ForeignKey(Goal, on_delete=models.SET_NULL, null=True)
+    # goal = models.ForeignKey(Goal,
+    #                          on_delete=models.SET_NULL,
+    #                          null=True,
+    #                          related_query_name="blocks")
 
 
 class RootCase(models.Model):
@@ -32,7 +42,7 @@ class RootCase(models.Model):
     """
     title = models.CharField(max_length=200)
     content = models.TextField(blank=True)
-    road_block = models.ForeignKey(RoadBlock, on_delete=models.SET_NULL, null=True)
+    # road_block = models.ForeignKey(RoadBlock, on_delete=models.SET_NULL, null=True)
 
 
 class Principle(models.Model):
@@ -47,7 +57,7 @@ class Solution(models.Model):
     方案
     """
     content = models.TextField(blank=True)
-    cycle = models.ForeignKey(Cycle, on_delete=models.SET_NULL, null=True)
+    # cycle = models.ForeignKey(Cycle, on_delete=models.SET_NULL, null=True)
 
 
 class Execute(models.Model):
@@ -55,7 +65,7 @@ class Execute(models.Model):
     执行
     """
     content = models.TextField(blank=True)
-    cycle = models.ForeignKey(Cycle, on_delete=models.SET_NULL, null=True)
+    # cycle = models.ForeignKey(Cycle, on_delete=models.SET_NULL, null=True)
 
 
 class Tag(models.Model):

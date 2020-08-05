@@ -5,28 +5,42 @@ from .models import Cycle
 from .models import Goal
 from .models import RoadBlock
 from .models import RootCase
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+
+
+class CsrfExemptSessionAuthentication(SessionAuthentication):
+
+    def enforce_csrf(self, request):
+        return  # To not perform the csrf check previously happening
+
+
+class CloseCsrfViewSet(viewsets.ModelViewSet):
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
 
 
 # Serializers define the API representation.
 class CycleSerializer(serializers.HyperlinkedModelSerializer):
+
     class Meta:
         model = Cycle
-        exclude = []
+        fields = ['id', 'title']
 
 
 # ViewSets define the view behavior.
-class CycleViewSet(viewsets.ModelViewSet):
+class CycleViewSet(CloseCsrfViewSet):
     queryset = Cycle.objects.all()
     serializer_class = CycleSerializer
 
 
 class GoalSerializer(serializers.HyperlinkedModelSerializer):
+
     class Meta:
         model = Goal
         fields = ['id', 'title', 'cycle']
 
 
-class GoalViewSet(viewsets.ModelViewSet):
+class GoalViewSet(CloseCsrfViewSet):
+
     queryset = Goal.objects.all()
     serializer_class = GoalSerializer
 
@@ -37,7 +51,7 @@ class RoadBlockSerializer(serializers.HyperlinkedModelSerializer):
         exclude = []
 
 
-class RoadBlockViewSet(viewsets.ModelViewSet):
+class RoadBlockViewSet(CloseCsrfViewSet):
     queryset = RoadBlock.objects.all()
     serializer_class = RoadBlockSerializer
 
@@ -48,7 +62,7 @@ class DiagnoseRootCaseSerializer(serializers.HyperlinkedModelSerializer):
         exclude = []
 
 
-class DiagnoseRootCaseViewSet(viewsets.ModelViewSet):
+class DiagnoseRootCaseViewSet(CloseCsrfViewSet):
     queryset = RootCase.objects.all()
     serializer_class = DiagnoseRootCaseSerializer
 
@@ -60,4 +74,5 @@ router.register(r'road_block', RoadBlockViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('cycle/<id>', views.cycle)
 ]

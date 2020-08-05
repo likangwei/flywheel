@@ -1,9 +1,5 @@
 import React from 'react';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import { InputLabel } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import axios from 'axios'
 
@@ -13,19 +9,18 @@ export default class RoadBlock extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      id: props.roadBlock.id || null,
-      title: props.roadBlock.title,
+      block: props.block
     }
   }
 
   save(){
     let self = this
-    let {id, title} = this.state
-    axios.put(`/replay/road_block/${id}/`, {title: title})
+    let {id} = this.state.block
+    axios.put(`/replay/road_block/${id}/`, this.state.block)
       .then(function (response) {
         console.log(response);
-        if(response.status == 200){
-          self.setState({title: response.data.title})
+        if(response.status === 200){
+          self.setState({block: response.data})
         }
       })
       .catch(function (error) {
@@ -35,11 +30,14 @@ export default class RoadBlock extends React.Component {
   }
 
   handleChange(event){
-    this.setState({title: event.target.value});
+    let block = {...this.state.block}
+    block.title = event.target.value
+    this.setState({block});
   };
 
   render(){
-    let {id, title} = this.state
+    let {title} = this.state.block
+
     return (
         <div>
           <TextField
@@ -47,13 +45,13 @@ export default class RoadBlock extends React.Component {
             label="障碍"
             type="text"
             onChange={(e)=>this.handleChange(e)}
-            value={this.state.roadBlock}
+            value={title}
           />;
           <Button
             variant="contained"
             onClick={()=>this.save()}
-            disable={id != null}
           >保存</Button>
+          <button>分析根本原因</button>
         </div>
     )
   }

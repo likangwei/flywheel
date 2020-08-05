@@ -6,7 +6,6 @@ from .models import Tag
 from .models import Cycle
 
 admin.site.register(Tag)
-admin.site.register(Cycle)
 
 
 class ReplayAdmin(admin.ModelAdmin):
@@ -16,6 +15,8 @@ class ReplayAdmin(admin.ModelAdmin):
 
 
 class CycleAdmin(admin.ModelAdmin):
-    list_display = ['']
+    list_display = ['goal']
+    exclude = []
 
+admin.site.register(Cycle, CycleAdmin)
 admin.site.register(Replay, ReplayAdmin)
