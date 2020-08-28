@@ -6,7 +6,7 @@ from .models import Situation
 
 
 class FlyWheelAdmin(admin.ModelAdmin):
-    list_display = ['name']
+    list_display = ['name', 'rate', 'rate_one_year']
 
     class Meta:
         fields = ['name']
