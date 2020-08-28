@@ -3,6 +3,8 @@ from django.db import models
 
 class Flywheel(models.Model):
     name = models.CharField(max_length=200)
+    rate = models.CharField(max_length=200, default="")
+    rate_one_year = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
