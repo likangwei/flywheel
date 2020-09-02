@@ -3,6 +3,7 @@ from django.contrib import admin
 from .models import Flywheel
 from .models import WheelPart
 from .models import Situation
+from .models import Case
 
 
 class FlyWheelAdmin(admin.ModelAdmin):
@@ -17,6 +18,7 @@ class SituationAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Flywheel, FlyWheelAdmin)
-admin.site.register(WheelPart)
+# admin.site.register(WheelPart)
+admin.site.register(Case)
 admin.site.register(Situation, SituationAdmin)
 

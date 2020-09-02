@@ -30,3 +30,19 @@ class Situation(models.Model):
 
     def __str__(self):
         return self.situation
+
+
+class Case(models.Model):
+    TYPE_GOOD = 'good'
+    TYPE_BAD = 'bad'
+
+    TYPE_CHOICES = (
+        (TYPE_GOOD, 'good'),
+        (TYPE_BAD, 'bad')
+    )
+    title = models.CharField(max_length=200)
+    content = models.TextField(blank=True)
+    type = models.CharField(choices=TYPE_CHOICES, max_length=20, default=TYPE_GOOD)
+
+    def __str__(self):
+        return self.title
