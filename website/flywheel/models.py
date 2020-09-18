@@ -92,7 +92,11 @@ class Weakness(models.Model):
 
 
 class Goal(models.Model):
-    title = models.CharField(max_length=200)
+    title = models.TextField(help_text="背景、目标、量化")
+    problems = models.TextField(blank=True, help_text="发现问题")
+    analyze = models.TextField(blank=True, help_text="分析问题")
+    solution = models.TextField(blank=True, help_text="方案")
+    execution = models.TextField(blank=True, help_text="执行")
 
     def __str__(self):
         return self.title

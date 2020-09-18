@@ -12,11 +12,11 @@ def copy_offline(modeladmin, request, queryset):
     # 如果下游没有任务依赖此任务，则可以下线
     any_depend = False
     for copy in queryset.all():
-        copy.depend = ''
+        copy.depend = '下游: '
         for down in copy.downstreams.all():
             if down.id != copy.id:
                 any_depend = True
-            copy.depend += 'downstream:%s_%s\n' % (down.id, down.name)
+            copy.depend += '%s_%s\n' % (down.id, down.name)
         if not any_depend:
             copy.status = Copy.STATUS_OFF
         copy.save()
