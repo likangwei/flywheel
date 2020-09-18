@@ -11,13 +11,15 @@ class Copy(models.Model):
         (STATUS_OFF, STATUS_OFF),
     )
     name = models.CharField(max_length=200)
-    cost = models.TextField()
-    rate = models.CharField(max_length=200, default="")
-    rate_one_year = models.IntegerField(default=0)
+    depend = models.TextField(help_text="基础依赖", blank=True)
+    how = models.TextField(help_text='如何做，请从最坏到最好依次兜底', default='', blank=True)
+    rate = models.CharField(max_length=200, default="", blank=True)
+    rate_one_year = models.IntegerField(default=0, blank=True)
     status = models.CharField(max_length=200, default=STATUS_OFF, choices=STATUS_CHOICES)
+    depends = models.ManyToManyField('Copy', blank=True, related_name="downstreams")
 
     def __str__(self):
-        return self.name
+        return '%s_%s' % (self.id, self.name)
 
     class Meta:
         db_table = 'flywheel_flywheel'
@@ -70,11 +72,12 @@ class Case(models.Model):
     content = models.TextField(blank=True)
     type = models.CharField(choices=TYPE_CHOICES, max_length=20, default=TYPE_GOOD)
     recount = models.IntegerField(default=0)
-    solution_short = models.TextField(blank=True)
-    solution_middle = models.TextField(blank=True)
-    solution_long = models.TextField(blank=True)
-    principle = models.TextField()
+    solution_short = models.TextField(blank=True, help_text="如何灭火")
+    solution_middle = models.TextField(blank=True, help_text="如何控火")
+    solution_long = models.TextField(blank=True, help_text="如何防火")
+    principle = models.TextField(blank=True)
     can_copy = models.BooleanField(default=False)
+    copy = models.ForeignKey(Copy, help_text="copy到哪了", on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.title
