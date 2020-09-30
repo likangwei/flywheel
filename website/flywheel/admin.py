@@ -5,6 +5,7 @@ from .models import WheelPart
 from .models import Situation
 from .models import Case
 from .models import Weakness
+from .models import Problem
 from .models import Goal
 
 
@@ -26,7 +27,7 @@ copy_offline.short_description = "下线"
 
 
 class CopyAdmin(admin.ModelAdmin):
-    list_display = ['name', 'status', 'depend']
+    list_display = ['name', 'check_rate', 'status', 'depend']
     list_filter = ['status']
     actions = [copy_offline]
 
@@ -43,9 +44,15 @@ class CaseAdmin(admin.ModelAdmin):
     list_filter = ['can_copy']
 
 
+class GoalAdmin(admin.ModelAdmin):
+    list_display = ['goal', 'solution', 'status']
+    list_filter = ['status']
+
+
 admin.site.register(Copy, CopyAdmin)
 # admin.site.register(WheelPart)
 admin.site.register(Weakness)
-admin.site.register(Goal)
+admin.site.register(Problem)
+admin.site.register(Goal, GoalAdmin)
 admin.site.register(Case, CaseAdmin)
 admin.site.register(Situation, SituationAdmin)
